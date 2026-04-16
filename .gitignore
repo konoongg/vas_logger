@@ -1,0 +1,17 @@
+*.o
+*.ko
+*.mod
+*.mod.c
+*.mod.o
+*.cmd
+.*.cmd
+
+*/tmp/
+*/log/
+*.txt
+
+# IDE
+.vscode/
+.idea/
+
+./start.sh
