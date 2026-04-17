@@ -1,31 +1,31 @@
-#include <linux/init.h>
 #include <linux/module.h>
-#include <linux/kernel.h>
+#include <linux/kprobes.h>
+#include <linux/sched.h>
+#include <linux/mm_types.h>
 
 #include "hooks/hooks.h"
 
-static int __init vas_logger_init(void) {
+static int __init kprobe_exec_init(void)
+{
 
     if (!vg_register_hooks()) {
-        pr_err("vas_logger: can't register hooks \n");
-        return 1;
+
+        printk(KERN_WARNING "VAS_LOGGER: can't start \n");
+        return -1;
     }
 
-
-    pr_info("vas_logger: Initializing module \n");
+    printk(KERN_INFO "VAS_LOGGER: start \n");
     return 0;
 }
 
-static void __exit vas_logger_exit(void) {
-    vg_register_hooks();
-
-    pr_info("vas_logger: deInitializing module \n");
+static void __exit kprobe_exec_exit(void)
+{
+    vg_unregister_hooks();
+    printk(KERN_INFO "VAS_LOGGER: finish \n");
 }
 
-module_init(vas_logger_init);
-module_exit(vas_logger_exit);
+module_init(kprobe_exec_init);
+module_exit(kprobe_exec_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Vladislav Akhmedov");
-MODULE_DESCRIPTION("Kernel module, that creates /proc/<pid>/vas_logger and writes VAS creation information to this file");
-MODULE_VERSION("1.0");
+MODULE_DESCRIPTION("Monitor process address space using kprobe on do_execve");
