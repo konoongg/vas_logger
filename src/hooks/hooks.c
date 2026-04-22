@@ -53,7 +53,7 @@ vg_register_exec_hooks(void) {
 
     ret = register_kprobe(&vg_hooks->kp_exec);
     if (ret != 0) {
-        printk(KERN_WARNING "kprobe can't registered on \n");
+        printk(KERN_ERR "kprobe can't registered on \n");
         return false;
     }
 
