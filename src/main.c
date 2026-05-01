@@ -4,31 +4,34 @@
 #include <linux/mm_types.h>
 
 #include "hooks/hooks.h"
-#include "vg_fs/vg_fs.h"
+#include "storage/storage.h"
 
-static int __init kprobe_exec_init(void)
+static int __init
+kprobe_exec_init(void)
 {
-
-    if (!vg_fs_register()) {
-        printk(KERN_WARNING "VAS_LOGGER: can't create VAS_FS \n");
+    if (!vg_st_create_storage()) {
+        printk(KERN_WARNING "VAS_LOGGER: can't init storage\n");
         return -1;
     }
 
     if (!vg_register_hooks()) {
-
-        printk(KERN_WARNING "VAS_LOGGER: can't start \n");
-        vg_fs_unregister();
-        return -1;
+        printk(KERN_WARNING "VAS_LOGGER: can't init hooks\n");
+        goto fail;
     }
 
     printk(KERN_INFO "VAS_LOGGER: start \n");
     return 0;
+
+fail:
+    vg_st_destroy_storage();
+    return -1;
 }
 
-static void __exit kprobe_exec_exit(void)
+static void __exit
+kprobe_exec_exit(void)
 {
     vg_unregister_hooks();
-    vg_fs_unregister();
+    vg_st_destroy_storage();
     printk(KERN_INFO "VAS_LOGGER: finish \n");
 }
 

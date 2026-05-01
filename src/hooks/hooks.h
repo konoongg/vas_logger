@@ -6,8 +6,8 @@
 typedef struct vg_hooks_s vg_hooks_t;
 
 struct vg_hooks_s {
-    struct kprobe kp_exec;
     struct kretprobe kretp_exec;
+    struct kprobe    kp_exit;
 };
 
 extern bool vg_register_hooks(void);

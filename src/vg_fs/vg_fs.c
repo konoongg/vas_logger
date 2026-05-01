@@ -172,7 +172,7 @@ static struct file_system_type vas_fs_type = {
 };
 
 static struct vfsmount *mount_point = NULL;
-static const char *MOUNT_PATH = "/vas_log";
+//static const char *MOUNT_PATH = "/vas_log";
 
 extern bool
 vg_fs_register(void) {
