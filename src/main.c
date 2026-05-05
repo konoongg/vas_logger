@@ -7,8 +7,7 @@
 #include "storage/storage.h"
 
 static int __init
-kprobe_exec_init(void)
-{
+vas_logger_init(void) {
     if (!vg_st_create_storage()) {
         printk(KERN_WARNING "VAS_LOGGER: can't init storage\n");
         return -1;
@@ -28,15 +27,14 @@ fail:
 }
 
 static void __exit
-kprobe_exec_exit(void)
-{
+vas_logger_exit(void) {
     vg_unregister_hooks();
     vg_st_destroy_storage();
     printk(KERN_INFO "VAS_LOGGER: finish \n");
 }
 
-module_init(kprobe_exec_init);
-module_exit(kprobe_exec_exit);
+module_init(vas_logger_init);
+module_exit(vas_logger_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Monitor process address space using kprobe on do_execve");

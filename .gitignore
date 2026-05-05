@@ -6,6 +6,8 @@
 *.mod.o
 *.cmd
 .*.cmd
+*.order
+*.symvers
 
 */tmp/
 */log/
